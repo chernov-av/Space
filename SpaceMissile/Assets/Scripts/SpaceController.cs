@@ -4,39 +4,87 @@ using UnityEngine;
 
 public class SpaceController : SpaceElement
 {
+    public GameObject explosion;
+    public double A;
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (app.view.missile != null) 
-        {
-            app.model.missile_R = app.view.missile.transform.position;
-        }
-
         if (app.view.target != null)
         {
             app.model.target_R = app.view.target.transform.position;
         }
     }
 
-    public void missile_movement()
+    // Update is called once per frame
+    void Update()
     {
-        app.view.missile.transform.position = app.model.guide_missile(app.model.missile_R, app.model.missile_V, app.model.target_R, app.model.target_V);
-        app.view.missile.transform.rotation = Quaternion.LookRotation(app.model.missile_V);
+        if (app.view.target != null)
+        {
+            app.model.target_R = app.view.target.transform.position;
+        }
+        else
+        {
+            app.model.target_R.x = float.NaN;
+            app.model.target_R.y = float.NaN;
+            app.model.target_R.z = float.NaN;
+        }
     }
+
+
+}
+
+public class MissileController : SpaceController
+{
+    MissileModel mm;
     
-    public void missile_collapse(Collision collision)
+
+    public MissileController(Vector3 mR, Vector3 mV)
+    {
+        this.mm = new MissileModel(mR, mV);
+    }
+
+    void Update()
+    {
+        /*if (app.view.missile != null)
+        {
+            mm.missile_R = app.view.missile.transform.position;
+        }
+        */
+
+    }
+    public Vector3 missile_movement(bool guide)
+    {
+        Vector3 pos = this.mm.move_missile(this.mm.missile_R, this.mm.missile_V, app.model.target_R, app.model.target_V, guide);
+
+        //transform.rotation = Quaternion.LookRotation(this.mm.missile_V);
+        return pos;
+    }
+
+    public double get_dis()
+    {
+        return this.mm.distance_traveled;
+    }
+
+    public Quaternion missile_rotation()
+    {
+        Quaternion rot = Quaternion.LookRotation(this.mm.missile_V);
+        return rot;
+    }
+
+    public void missile_collapse(GameObject gameObject)
+    {
+        Object exp = Instantiate(Resources.Load("BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation); 
+        Destroy(gameObject);
+        Destroy(exp, 4.0f);
+    }
+    public void missile_collapse(GameObject gameObject, Collision collision)
     {
         if (collision.gameObject.tag == "Target")
         {
-            Destroy(collision.gameObject);   
+            Destroy(collision.gameObject);
         }
-
-
+        Object exp = Instantiate(Resources.Load("BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Destroy(gameObject);
+        Destroy(exp, 4.0f);
     }
 }
