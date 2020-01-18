@@ -34,8 +34,7 @@ public class SpaceController : SpaceElement
     {
         if (collision.gameObject.tag == "Target")
         {
-            Destroy(collision.gameObject);
-            
+            Destroy(collision.gameObject);   
         }
 
 

@@ -44,12 +44,6 @@ public class Guidance
 
         U = k * Vector3.Cross(omega, missile_V);
 
-        // Vector3 V;
-       // V.x = 1;
-       // V.y = 0;
-       // V.z = 0;
-        //U = missile_R + V * Time.deltaTime;
-
         return U;
     }
 }

@@ -30,7 +30,6 @@ public class MissileView : SpaceElement
         if (collision.gameObject.tag == "Target")
         {
             Destroy(collision.gameObject);
-
         }
         Destroy(gameObject);
     }
