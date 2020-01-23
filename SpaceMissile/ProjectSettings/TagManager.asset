@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Missile
   - Target
+  - MissileFire
+  - MissileSmoke
   layers:
   - Default
   - TransparentFX

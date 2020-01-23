@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 342}
   m_MaxSize: {x: 12004, y: 8042}
   vertical: 0
-  controlID: 14
+  controlID: 52
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -120,8 +120,8 @@ MonoBehaviour:
     y: 686
     width: 1371
     height: 271
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 13}
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 342}
   m_MaxSize: {x: 8003, y: 8042}
   vertical: 1
-  controlID: 15
+  controlID: 97
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 16
+  controlID: 98
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -338,20 +338,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources
+    - Assets/StarSparrow/Readme
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Resources
+  - Assets/StarSparrow/Readme
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\Project\devSpaceMissile\SpaceMissile
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 143}
-    m_SelectedIDs: 2e700000
-    m_LastClickedID: 28718
-    m_ExpandedIDs: 00000000be430000
+    scrollPos: {x: 0, y: 58}
+    m_SelectedIDs: d2380000
+    m_LastClickedID: 14546
+    m_ExpandedIDs: 00000000c0580000c2580000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -379,7 +379,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000be430000
+    m_ExpandedIDs: 00000000c0580000c2580000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -404,9 +404,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: 903a0000
+    m_LastClickedInstanceID: 14992
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000d03d000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -502,9 +502,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: f0e6ffff
+      m_SelectedIDs: 1a580000
+      m_LastClickedID: 22554
+      m_ExpandedIDs: 0abaffffe8570000225800002e580000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -564,9 +564,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 8.501705, y: 31.767914, z: 2.5705252}
+    m_Target: {x: 253.36908, y: 133.89998, z: 21.4}
     speed: 2
-    m_Value: {x: 8.501705, y: 31.767914, z: 2.5705252}
+    m_Value: {x: 253.36908, y: 133.89998, z: 21.4}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -612,13 +612,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.18064365, y: 0.6373504, z: -0.15719281, w: -0.7324284}
+    m_Target: {x: -0.093036406, y: 0.73095614, z: -0.10174725, w: -0.6683649}
     speed: 2
-    m_Value: {x: -0.18064287, y: 0.63734764, z: -0.15719214, w: -0.7324252}
+    m_Value: {x: -0.09303563, y: 0.73095006, z: -0.1017464, w: -0.6683593}
   m_Size:
-    m_Target: 17.639114
+    m_Target: 21.003798
     speed: 2
-    m_Value: 17.639114
+    m_Value: 21.003798
   m_Ortho:
     m_Target: 0
     speed: 2

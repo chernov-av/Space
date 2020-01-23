@@ -14,6 +14,7 @@ public class Guidance
     Vector3 Vn;
     float k = 3;
 
+    //Guidance. PPN^ control vector is orthogonal to missile velocity vector
 
     public Guidance(Vector3 mR, Vector3 mV, Vector3 tR, Vector3 tV)
     {

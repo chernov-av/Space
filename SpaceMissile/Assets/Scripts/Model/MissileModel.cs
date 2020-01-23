@@ -6,6 +6,7 @@ public class MissileModel : SpaceElement
 {
     public Vector3 missile_R;
     public Vector3 missile_V;
+    public Vector3 missile_A;
     public double distance_traveled = 0;
     Vector3 last_position;
     Vector3 U;
@@ -24,10 +25,11 @@ public class MissileModel : SpaceElement
 
     
 
-    public MissileModel(Vector3 missile_R, Vector3 missile_V)
+    public MissileModel(Vector3 missile_R, Vector3 missile_V, Vector3 missile_A)
     {
         this.missile_R = missile_R;
         this.missile_V = missile_V;
+        this.missile_A = missile_A;
         this.last_position = missile_R;
     }
 
@@ -35,16 +37,16 @@ public class MissileModel : SpaceElement
     {
         if ((guide) && (!float.IsNaN(tR.x)))
         {
-            U = this.guide_missile(mR, mV, tR, tV);
+            U = this.guide_missile(mR, mV, tR, tV); //count control signal
         }
         else
         {
             U = Vector3.zero;
         }
 
-        this.missile_V = mV + U * Time.deltaTime;
-        this.missile_R = mR + this.missile_V * Time.deltaTime;
-        this.distance_traveled += Vector3.Distance(this.missile_R, this.last_position);
+        this.missile_V = mV + U * Time.deltaTime; //count velocity
+        this.missile_R = mR + this.missile_V * Time.deltaTime; //count position
+        this.distance_traveled += Vector3.Distance(this.missile_R, this.last_position); //count distance
         this.last_position = this.missile_R;
         return missile_R;
     }
@@ -52,7 +54,7 @@ public class MissileModel : SpaceElement
     Vector3 guide_missile(Vector3 mR, Vector3 mV, Vector3 tR, Vector3 tV)
     {
         Guidance gd = new Guidance(mR, mV, tR, tV);
-        Vector3 u = gd.get_U();
+        Vector3 u = gd.get_U(); //call function for control signal counting
         return u;
     }
 }

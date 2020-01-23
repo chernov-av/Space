@@ -5,7 +5,6 @@ using UnityEngine;
 public class SpaceController : SpaceElement
 {
     public GameObject explosion;
-    public double A;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,9 +37,9 @@ public class MissileController : SpaceController
     MissileModel mm;
     
 
-    public MissileController(Vector3 mR, Vector3 mV)
+    public MissileController(Vector3 mR, Vector3 mV, Vector3 mA)
     {
-        this.mm = new MissileModel(mR, mV);
+        this.mm = new MissileModel(mR, mV, mA);
     }
 
     void Update()
@@ -52,12 +51,9 @@ public class MissileController : SpaceController
         */
 
     }
-    public Vector3 missile_movement(bool guide)
+    public void missile_movement(GameObject gameobject, bool guide)
     {
-        Vector3 pos = this.mm.move_missile(this.mm.missile_R, this.mm.missile_V, app.model.target_R, app.model.target_V, guide);
-
-        //transform.rotation = Quaternion.LookRotation(this.mm.missile_V);
-        return pos;
+        gameobject.transform.position = this.mm.move_missile(this.mm.missile_R, this.mm.missile_V, app.model.target_R, app.model.target_V, guide);      
     }
 
     public double get_dis()
@@ -65,20 +61,35 @@ public class MissileController : SpaceController
         return this.mm.distance_traveled;
     }
 
-    public Quaternion missile_rotation()
+    public void missile_rotation(GameObject gameObject)
     {
-        Quaternion rot = Quaternion.LookRotation(this.mm.missile_V);
-        return rot;
+        if (this.mm.missile_V != Vector3.zero)
+        {
+            gameObject.transform.rotation = Quaternion.LookRotation(this.mm.missile_V);
+        }
+        
+    }
+
+    public void set_V(Vector3 V)
+    {
+        this.mm.missile_V = V;
+    }
+
+    public void set_R(Vector3 R)
+    {
+        this.mm.missile_R = R;
     }
 
     public void missile_collapse(GameObject gameObject)
     {
+        //without target
         Object exp = Instantiate(Resources.Load("BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation); 
         Destroy(gameObject);
         Destroy(exp, 4.0f);
     }
     public void missile_collapse(GameObject gameObject, Collision collision)
     {
+        // on target hit
         if (collision.gameObject.tag == "Target")
         {
             Destroy(collision.gameObject);

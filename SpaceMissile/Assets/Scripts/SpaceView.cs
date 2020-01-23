@@ -6,6 +6,7 @@ public class SpaceView : SpaceElement
 {
     public TargetView target;
     public MissileView missile;
+    public SpaceShipView spaceship;
     //public MissileView missile_2;
     // Start is called before the first frame update
     void Start()
