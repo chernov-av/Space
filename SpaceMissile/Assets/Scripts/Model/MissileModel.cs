@@ -9,7 +9,7 @@ public class MissileModel : SpaceElement
     public Vector3 missile_A;
     public double distance_traveled = 0;
     Vector3 last_position;
-    Vector3 U;
+    public Vector3 U;
 
     // Start is called before the first frame update
     void Start()

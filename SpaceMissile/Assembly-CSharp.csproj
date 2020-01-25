@@ -67,14 +67,15 @@
     <Compile Include="Assets\Scripts\Controller\ReadOnlyAttribute.cs" />
     <Compile Include="Assets\Scripts\Controller\ShipController.cs" />
     <Compile Include="Assets\Scripts\MainApplication.cs" />
+    <Compile Include="Assets\Scripts\Model\EnemyModel.cs" />
     <Compile Include="Assets\Scripts\Model\Guidance.cs" />
     <Compile Include="Assets\Scripts\Model\MissileModel.cs" />
     <Compile Include="Assets\Scripts\SpaceController.cs" />
     <Compile Include="Assets\Scripts\SpaceModel.cs" />
     <Compile Include="Assets\Scripts\SpaceView.cs" />
+    <Compile Include="Assets\Scripts\View\EnemyView.cs" />
     <Compile Include="Assets\Scripts\View\MissileView.cs" />
     <Compile Include="Assets\Scripts\View\SpaceShipView.cs" />
-    <Compile Include="Assets\Scripts\View\TargetView.cs" />
     <Compile Include="Assets\StarSparrow\Readme\Readme Files\Scripts\ReadmeStarSparrow.cs" />
     <None Include="Assets\EffectExamples\Shared\Shaders\SurfaceShader_VC.shader" />
     <Reference Include="Unity.Timeline.Editor">
@@ -95,20 +96,20 @@
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Postprocessing.Editor">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Postprocessing.Runtime">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Postprocessing.Editor">
-      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>D:/Program Files/Unity/2019.3.0f3/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

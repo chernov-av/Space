@@ -8,6 +8,8 @@ TagManager:
   - Target
   - MissileFire
   - MissileSmoke
+  - PlayerShip
+  - Enemy
   layers:
   - Default
   - TransparentFX
