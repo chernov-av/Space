@@ -8,25 +8,13 @@ public class SpaceController : SpaceElement
     // Start is called before the first frame update
     void Start()
     {
-        /*if (app.view.enemy != null)
-        {
-            app.model. = app.view.enemy.transform.position;
-        }*/
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*if (app.view.enemy != null)
-        {
-            app.model.target_R = app.view.enemy.transform.position;
-        }
-        else
-        {
-            app.model.target_R.x = float.NaN;
-            app.model.target_R.y = float.NaN;
-            app.model.target_R.z = float.NaN;
-        }*/
+       
     }
 
 
@@ -85,12 +73,18 @@ public class MissileController : SpaceController
 
     public void set_target(EnemyView target)
     {
-        this.target = target;        
+        this.target = target;
+        this.target_R = target.eR;
     }
 
     public Vector3 get_target_R()
     {
         return this.target_R;
+    }
+
+    public double get_damage()
+    {
+       return this.mm.get_damage(); 
     }
 
     public void missile_collapse(GameObject gameObject)
@@ -105,7 +99,45 @@ public class MissileController : SpaceController
         // on target hit
         if (collision.gameObject.tag == "Enemy")
         {
-            Destroy(collision.gameObject);
+            // Destroy(collision.gameObject);
+            EnemyView enemy = collision.gameObject.GetComponent<EnemyView>();
+            //enemy.ec.destroy(collision.gameObject);
+            MissileView mw = gameObject.GetComponent<MissileView>();
+            enemy.ec.hit(gameObject,mw.mc.get_damage());
+        }
+        Object exp = Instantiate(Resources.Load("BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Destroy(gameObject);
+        Destroy(exp, 4.0f);
+    }
+}
+
+public class ShellController: SpaceController
+{
+    ShellModel sm;
+    public ShellController()
+    {
+        sm = new ShellModel();
+    }
+
+    public double get_damage()
+    {
+        return this.sm.get_damage();
+    }
+
+    public void shell_destroy(GameObject gameObject)
+    {     
+        Destroy(gameObject);        
+    }
+    public void shell_hit(GameObject gameObject, Collision collision)
+    {
+        // on target hit
+        if (collision.gameObject.tag == "Enemy")
+        {
+            // Destroy(collision.gameObject);
+            EnemyView enemy = collision.gameObject.GetComponent<EnemyView>();
+            //enemy.ec.destroy(collision.gameObject);
+            ShellView sw = gameObject.GetComponent<ShellView>();
+            enemy.ec.hit(gameObject, sw.sc.get_damage());
         }
         Object exp = Instantiate(Resources.Load("BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
@@ -116,13 +148,45 @@ public class MissileController : SpaceController
 public class EnemyController : SpaceController
 {
     EnemyModel em;
-    public EnemyController(Vector3 eR, Vector3 eV, Vector3 eA)
+    public EnemyController(Vector3 eR, Vector3 eV, Vector3 eA,double eArm,double eSh)
     {
-        this.em = new EnemyModel(eR, eV, eA);
+        this.em = new EnemyModel(eR, eV, eA, eArm, eSh);
     }
 
     public void enemy_movement()
     {
+
+    }
+
+    public double get_armor()
+    {
+        return this.em.armor;
+    }
+
+    public double get_shield()
+    {
+        return this.em.shield;
+    }
+
+    public void hit(GameObject gameObject, double damage)
+    {
+        switch (gameObject.tag)
+        {
+            case "Missile":
+                em.count_missile_damage(damage);
+                break;
+
+            case "Shell":
+                em.count_shell_damage(damage);
+                break;
+        }
+    }
+
+    public void destroy(GameObject gameObject)
+    {
+        Object exp = Instantiate(Resources.Load("BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Destroy(gameObject);
+        Destroy(exp, 4.0f);
 
     }
 }

@@ -11,6 +11,8 @@ public class MissileModel : SpaceElement
     Vector3 last_position;
     public Vector3 U;
 
+    double damage = 500;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,5 +58,10 @@ public class MissileModel : SpaceElement
         Guidance gd = new Guidance(mR, mV, tR, tV);
         Vector3 u = gd.get_U(); //call function for control signal counting
         return u;
+    }
+
+    public double get_damage()
+    {
+        return this.damage;
     }
 }

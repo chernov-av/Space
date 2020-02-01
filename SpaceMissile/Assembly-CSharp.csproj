@@ -63,19 +63,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Controller\MissileStartController.cs" />
+    <Compile Include="Assets\Scripts\Controller\PlayerShipController.cs" />
     <Compile Include="Assets\Scripts\Controller\ReadOnlyAttribute.cs" />
     <Compile Include="Assets\Scripts\Controller\ShipController.cs" />
+    <Compile Include="Assets\Scripts\Controller\WeaponController.cs" />
     <Compile Include="Assets\Scripts\MainApplication.cs" />
     <Compile Include="Assets\Scripts\Model\EnemyModel.cs" />
     <Compile Include="Assets\Scripts\Model\Guidance.cs" />
     <Compile Include="Assets\Scripts\Model\MissileModel.cs" />
+    <Compile Include="Assets\Scripts\Model\PlayerShipModel.cs" />
+    <Compile Include="Assets\Scripts\Model\ShellModel.cs" />
     <Compile Include="Assets\Scripts\SpaceController.cs" />
     <Compile Include="Assets\Scripts\SpaceModel.cs" />
     <Compile Include="Assets\Scripts\SpaceView.cs" />
     <Compile Include="Assets\Scripts\View\EnemyView.cs" />
     <Compile Include="Assets\Scripts\View\MissileView.cs" />
-    <Compile Include="Assets\Scripts\View\SpaceShipView.cs" />
+    <Compile Include="Assets\Scripts\View\PlayerShipView.cs" />
+    <Compile Include="Assets\Scripts\View\ShellView.cs" />
     <Compile Include="Assets\StarSparrow\Readme\Readme Files\Scripts\ReadmeStarSparrow.cs" />
     <None Include="Assets\EffectExamples\Shared\Shaders\SurfaceShader_VC.shader" />
     <Reference Include="Unity.Timeline.Editor">

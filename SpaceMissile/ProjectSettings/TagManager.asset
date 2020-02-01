@@ -10,6 +10,7 @@ TagManager:
   - MissileSmoke
   - PlayerShip
   - Enemy
+  - Shell
   layers:
   - Default
   - TransparentFX

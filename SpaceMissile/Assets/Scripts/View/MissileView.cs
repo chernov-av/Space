@@ -9,7 +9,7 @@ public class MissileView : SpaceView
     public Vector3 mV; //velocity
     public Vector3 mR; //coordinates
     public Vector3 mA; //angle
-    public double max_dis = 1000; //max distance, when missile will be destroed
+    public double max_dis = 1000; //max distance, when missile will be destroyed
     public double dis=0;
     public Vector3 tR;
     

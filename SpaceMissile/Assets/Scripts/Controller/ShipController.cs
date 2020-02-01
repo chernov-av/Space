@@ -92,7 +92,7 @@ public class ShipController : SpaceController
             DampenTransform();
         }
 
-        Reload();
+        
     }
 
 
@@ -307,29 +307,5 @@ public class ShipController : SpaceController
         ship.angularVelocity = nAVeloc;
     }
 
-    public GameObject missile;
-
-    void Reload()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
-            
-            var missile_1 = Instantiate(missile, spaceship[0].transform.position + new Vector3(2.041f, -1.664f, -2.726f ), spaceship[0].transform.rotation) as GameObject;
-            missile_1.transform.parent = spaceship[0].transform;
-            missile_1.transform.localPosition = new Vector3(-2.726f, -1.664f, -2.041f);
-            var MissileJoint_1 = missile_1.GetComponent<FixedJoint>();
-            MissileJoint_1.connectedBody = spaceship[0].GetComponent<Rigidbody>();
-            var Rigidbody_1 = missile_1.GetComponent<Rigidbody>();
-            Rigidbody_1.constraints = RigidbodyConstraints.FreezePosition;
-
-            var missile_2 = Instantiate(missile, spaceship[0].transform.position + new Vector3(2.041f, -1.664f, 2.726f), spaceship[0].transform.rotation) as GameObject;
-            missile_2.transform.parent = spaceship[0].transform;
-            missile_2.transform.localPosition = new Vector3(2.726f, -1.664f, -2.041f);
-            var MissileJoint_2 = missile_2.GetComponent<FixedJoint>();
-            MissileJoint_2.connectedBody = spaceship[0].GetComponent<Rigidbody>();
-            var Rigidbody_2 = missile_2.GetComponent<Rigidbody>();
-            Rigidbody_2.constraints = RigidbodyConstraints.FreezePosition;
-        }
-    }
+   
 }
