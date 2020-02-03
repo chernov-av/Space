@@ -7,7 +7,7 @@ public class ShellView : SpaceView
     public ShellController sc;
     public double max_dis = 1000; //max distance, when missile will be destroyed
     Vector3 sR;
-    double dis = 0;
+    public double dis = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +28,8 @@ public class ShellView : SpaceView
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("HIT");
+
         this.sc.shell_hit(gameObject, collision);
     }
 }

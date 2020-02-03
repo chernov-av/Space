@@ -6,13 +6,13 @@ public class PlayerShipController : SpaceController
 {
     PlayerShipModel psm;
 
-    public PlayerShipController(double arm, double sh, double am, double en)
+    public PlayerShipController(double arm, double sh, int am, double en, int mis)
     {
-        psm = new PlayerShipModel(arm, sh, am, en);
+        psm = new PlayerShipModel(arm, sh, am, en, mis);
 
     }
 
-    public double get_ammo()
+    public int get_ammo()
     {
         return psm.get_ammo();
     }
@@ -30,6 +30,10 @@ public class PlayerShipController : SpaceController
     public double get_energy()
     {
         return psm.get_energy();
+    }
+    public int get_missiles()
+    {
+        return psm.get_missiles();
     }
 
     public PlayerShipModel get_psm()

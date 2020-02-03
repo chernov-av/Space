@@ -11,6 +11,8 @@ TagManager:
   - PlayerShip
   - Enemy
   - Shell
+  - Hitmarker
+  - View
   layers:
   - Default
   - TransparentFX

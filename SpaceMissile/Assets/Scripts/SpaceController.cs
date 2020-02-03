@@ -1,23 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpaceController : SpaceElement
 {
     public GameObject explosion;
-    // Start is called before the first frame update
-    void Start()
+
+   
+   // public float hitmarkshowtime;
+
+    private void Start()
     {
-       
+        
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
-
-
 }
 
 public class MissileController : SpaceController
@@ -90,7 +86,7 @@ public class MissileController : SpaceController
     public void missile_collapse(GameObject gameObject)
     {
         //without target
-        Object exp = Instantiate(Resources.Load("BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Object exp = Instantiate(Resources.Load("Prefabs/BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
         Destroy(exp, 4.0f);
     }
@@ -104,8 +100,10 @@ public class MissileController : SpaceController
             //enemy.ec.destroy(collision.gameObject);
             MissileView mw = gameObject.GetComponent<MissileView>();
             enemy.ec.hit(gameObject,mw.mc.get_damage());
+
+            GameObject.FindGameObjectsWithTag("View")[0].GetComponent<HitmarkerView>().getHitmarker();
         }
-        Object exp = Instantiate(Resources.Load("BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Object exp = Instantiate(Resources.Load("Prefabs/BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
         Destroy(exp, 4.0f);
     }
@@ -138,8 +136,10 @@ public class ShellController: SpaceController
             //enemy.ec.destroy(collision.gameObject);
             ShellView sw = gameObject.GetComponent<ShellView>();
             enemy.ec.hit(gameObject, sw.sc.get_damage());
+            GameObject.FindGameObjectsWithTag("View")[0].GetComponent<HitmarkerView>().getHitmarker();
+
         }
-        Object exp = Instantiate(Resources.Load("BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Object exp = Instantiate(Resources.Load("Prefabs/BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
         Destroy(exp, 4.0f);
     }
@@ -184,9 +184,10 @@ public class EnemyController : SpaceController
 
     public void destroy(GameObject gameObject)
     {
-        Object exp = Instantiate(Resources.Load("BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Object exp = Instantiate(Resources.Load("Prefabs/BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
         Destroy(exp, 4.0f);
 
     }
 }
+

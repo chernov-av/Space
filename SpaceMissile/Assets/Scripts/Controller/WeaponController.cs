@@ -6,58 +6,122 @@ public class WeaponController : SpaceController
 {
     public GameObject Missile;
     public GameObject Bullet;
-    float ShootTimer = 0.0f;    
+    float ShootTimer = 0.0f;
+    float EnergyLaserTimer = 0.0f;
+
+    public enum weapon_modes { MG=1, Missiles=2, Laser=3, Energy=4 };
+    public weapon_modes current_mode = weapon_modes.MG;
+    int numModes = System.Enum.GetValues(typeof(weapon_modes)).Length;
+
+    
+
     // Update is called once per frame
     void Update()
     {
-        //if mouse rightkey pressed fix target
-        if (Input.GetKeyDown(KeyCode.F))
+       
+        //depending on current weapon
+        switch (this.current_mode)
         {
-            this.fix_target();
-        }
-        
-        // if mouse leftkey pressed? call fire
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            this.launch_missile();
-        }
+            case weapon_modes.MG:
+                //shoot mg
+                if (Input.GetKey(KeyCode.Mouse0))
+                {
+                    this.shoot_bullet();
+                }
+                //timer for mg
+                if (this.ShootTimer > 0)
+                {
+                    this.ShootTimer -= Time.deltaTime;
+                }
+                break;
 
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            this.shoot_bullet();
-        }
+            case weapon_modes.Missiles:
+                //fix target for missile
+                if (Input.GetKeyDown(KeyCode.Mouse1))
+                {
+                    this.fix_target();
+                }
+                //launch missile
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    this.launch_missile();
+                }
+                break;
 
+            case weapon_modes.Laser:
+                if (Input.GetKey(KeyCode.Mouse0))
+                {
+                    this.shoot_laser();
+                }
+                if (this.EnergyLaserTimer > 0)
+                {
+                    this.EnergyLaserTimer -= Time.deltaTime;
+                }
+                break;
+
+            case weapon_modes.Energy:
+
+                break;
+        }
+        //Reloading
         if (Input.GetKeyDown(KeyCode.R))
         {
             this.reload();
         }
 
-        if (this.ShootTimer > 0)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            this.ShootTimer -= Time.deltaTime;
+            current_mode = weapon_modes.MG;
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            current_mode = weapon_modes.Missiles;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            current_mode = weapon_modes.Laser;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            current_mode = weapon_modes.Energy;
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            current_mode += 1;
+            if ((int)current_mode == numModes + 1) current_mode = weapon_modes.MG;
+        }
+        else if (Input.GetKeyDown(KeyCode.Z))
+        {
+            current_mode -= 1;
+            if ((int)current_mode == 0) current_mode = weapon_modes.Energy;
+        }      
     }
-
-   
+         
     void reload()
     {        
-            var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
+        var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
 
-            var missile_1 = Instantiate(Missile, spaceship[0].transform.position + new Vector3(2.041f, -1.664f, -2.726f), spaceship[0].transform.rotation) as GameObject;
-            missile_1.transform.parent = spaceship[0].transform;
-            missile_1.transform.localPosition = new Vector3(-2.726f, -1.664f, -2.041f);
-            var MissileJoint_1 = missile_1.GetComponent<FixedJoint>();
-            MissileJoint_1.connectedBody = spaceship[0].GetComponent<Rigidbody>();
-            var Rigidbody_1 = missile_1.GetComponent<Rigidbody>();
-            Rigidbody_1.constraints = RigidbodyConstraints.FreezePosition;
+        var missile_1 = Instantiate(Missile, spaceship[0].transform.position + new Vector3(2.041f, -1.664f, -2.726f), spaceship[0].transform.rotation) as GameObject;
+        missile_1.transform.parent = spaceship[0].transform;
+        missile_1.transform.localPosition = new Vector3(-2.726f, -1.664f, -2.041f);
+        var MissileJoint_1 = missile_1.GetComponent<FixedJoint>();
+        MissileJoint_1.connectedBody = spaceship[0].GetComponent<Rigidbody>();
+        var Rigidbody_1 = missile_1.GetComponent<Rigidbody>();
+        Rigidbody_1.constraints = RigidbodyConstraints.FreezePosition;
 
-            var missile_2 = Instantiate(Missile, spaceship[0].transform.position + new Vector3(2.041f, -1.664f, 2.726f), spaceship[0].transform.rotation) as GameObject;
-            missile_2.transform.parent = spaceship[0].transform;
-            missile_2.transform.localPosition = new Vector3(2.726f, -1.664f, -2.041f);
-            var MissileJoint_2 = missile_2.GetComponent<FixedJoint>();
-            MissileJoint_2.connectedBody = spaceship[0].GetComponent<Rigidbody>();
-            var Rigidbody_2 = missile_2.GetComponent<Rigidbody>();
-            Rigidbody_2.constraints = RigidbodyConstraints.FreezePosition;        
+        var missile_2 = Instantiate(Missile, spaceship[0].transform.position + new Vector3(2.041f, -1.664f, 2.726f), spaceship[0].transform.rotation) as GameObject;
+        missile_2.transform.parent = spaceship[0].transform;
+        missile_2.transform.localPosition = new Vector3(2.726f, -1.664f, -2.041f);
+        var MissileJoint_2 = missile_2.GetComponent<FixedJoint>();
+        MissileJoint_2.connectedBody = spaceship[0].GetComponent<Rigidbody>();
+        var Rigidbody_2 = missile_2.GetComponent<Rigidbody>();
+        Rigidbody_2.constraints = RigidbodyConstraints.FreezePosition;
+
+        PlayerShipModel psm = spaceship[0].GetComponent<PlayerShipView>().psc.get_psm();
+        psm.reload_ammo(500);
+        psm.reload_missiles(2);
+        psm.reload_energy(1000);
+
     }
 
     void shoot_bullet()
@@ -71,9 +135,21 @@ public class WeaponController : SpaceController
             shell.transform.parent = spaceship[0].transform;
             shell.transform.localPosition = new Vector3(0.0f, 0.0f, 8.0f);
             shell.transform.parent = null;
-            shell.GetComponent<Rigidbody>().AddForce(transform.forward * 0.01f, ForceMode.Impulse);
+            shell.GetComponent<Rigidbody>().AddForce(transform.forward * 0.5f, ForceMode.Impulse);
             psm.reduce_ammo();
             this.ShootTimer = psm.get_shootspeed();
+        }
+    }
+
+    void shoot_laser()
+    {
+        var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
+        PlayerShipModel psm = spaceship[0].GetComponent<PlayerShipView>().psc.get_psm();
+
+        if (psm.get_energy() > 0 & this.EnergyLaserTimer <= 0)
+        {
+            psm.reduce_energy();
+            this.EnergyLaserTimer = psm.get_energylaserreduction();
         }
     }
 
@@ -84,6 +160,7 @@ public class WeaponController : SpaceController
         missiles.AddRange(GameObject.FindGameObjectsWithTag("Missile"));
 
         var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
+        PlayerShipModel psm = spaceship[0].GetComponent<PlayerShipView>().psc.get_psm();
 
         //removes all already launched missiles
         int i = 0;
@@ -121,6 +198,7 @@ public class WeaponController : SpaceController
             //toggle smoke
             var missile_smoke = missile.transform.Find("smoke");
             missile_smoke.gameObject.SetActive(true);
+            psm.reduce_missiles();
         }
     }
 
@@ -158,4 +236,6 @@ public class WeaponController : SpaceController
             missile.mc.set_target(target);
         }
     }
+
+
 }
