@@ -39,7 +39,7 @@ public class WeaponController : SpaceController
                 //fix target for missile
                 if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
-                    this.fix_target();
+                    this.fix_target(Input.mousePosition);
                 }
                 //launch missile
                 if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -198,11 +198,14 @@ public class WeaponController : SpaceController
             //toggle smoke
             var missile_smoke = missile.transform.Find("smoke");
             missile_smoke.gameObject.SetActive(true);
+            //toggle camera
+            var missile_camera = missile.transform.Find("MissileCamera");
+            missile_camera.gameObject.SetActive(true);
             psm.reduce_missiles();
         }
     }
 
-    void fix_target()
+    void fix_target(Vector3 mousePos)
     {
         //get list of missiles
         List<GameObject> missiles = new List<GameObject>();
@@ -221,20 +224,22 @@ public class WeaponController : SpaceController
                 i++;
             }
         }
-
-
-        //get list of targets
-        List<GameObject> targets = new List<GameObject>();
-        targets.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
-
-        //set target for missile
-        if (missiles.Count > 0)
+        //ray to mouse position to fix target
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        
+        RaycastHit hit;
+        
+        if (Physics.Raycast(ray, out hit, 1000))
         {
-            //set target coords
-            MissileView missile = missiles[0].GetComponent<MissileView>();
-            EnemyView target = targets[0].GetComponent<EnemyView>();
-            missile.mc.set_target(target);
-        }
+            print(hit.transform.name);
+            GameObject target = hit.collider.gameObject;
+            if (missiles.Count > 0)
+            {
+                //set target coords
+                MissileView missile = missiles[0].GetComponent<MissileView>();
+                missile.mc.set_target(target);
+            }
+        }        
     }
 
 

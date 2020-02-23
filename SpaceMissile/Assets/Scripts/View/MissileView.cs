@@ -22,8 +22,6 @@ public class MissileView : SpaceView
         this.mc = new MissileController(this.mR, this.mV, this.mA);
     }
 
-
-
     // Update is called once per frame
     void Update()
     {
@@ -38,14 +36,14 @@ public class MissileView : SpaceView
             {
                 this.mc.missile_collapse(gameObject);
             }
-        }      
-
+        }    
     }
-
-
+    
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("HIT");
         this.mc.missile_collapse(gameObject, collision);
     }
+
+    
 }

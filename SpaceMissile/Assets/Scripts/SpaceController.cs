@@ -6,71 +6,103 @@ using UnityEngine.UI;
 public class SpaceController : SpaceElement
 {
     public GameObject explosion;
-
+    public float angle;
+    protected Camera cam;
    
    // public float hitmarkshowtime;
 
-    private void Start()
-    {
-        
-    }
 }
 
 public class MissileController : SpaceController
 {
     MissileModel mm;
-    EnemyView target;
+    GameObject target;
     Vector3 target_R = new Vector3(float.NaN,float.NaN,float.NaN);
     Vector3 target_V;
 
     public MissileController(Vector3 mR, Vector3 mV, Vector3 mA)
     {
         this.mm = new MissileModel(mR, mV, mA);
+        //this.mm = gameObject.AddComponent<MissileModel>();
     }
 
     public void missile_movement(GameObject gameobject, bool guide)
     {
         if (target != null)
         {
-            this.target_R = target.eR;
-            this.target_V = target.eV;
+            this.target_R = target.GetComponent<EnemyView>().eR;
+            this.target_V = target.GetComponent<EnemyView>().eV;
+            //List of view points and list of visibility of each point
+            List<GameObject> viewPointList = new List<GameObject>();
+            List<bool> viewPointVisibilityList = new List<bool>();
+            //get viewpoints of the selected target
+            foreach (Transform child in this.target.transform)
+            {
+                if (child.tag == "ViewPoint")
+                {
+                    viewPointList.Add(child.gameObject);
+                    Vector3 targetDir = child.gameObject.transform.position - this.mm.Missile_R;
+                    //get angle between camera and viewpoint
+                    angle = Vector3.Angle(targetDir, gameobject.transform.forward);
+                    print(angle);
+                    Camera cam = gameobject.GetComponentInChildren<Camera>();
+
+                    if (angle < cam.fieldOfView / 2)
+                    {
+                        viewPointVisibilityList.Add(true);
+                    }
+                    else
+                    {
+                        viewPointVisibilityList.Add(false);
+                    }
+                }
+            }
+
+            if (viewPointVisibilityList.Contains(true))
+            {
+                guide = true;
+            }
+            else { guide = false; }            
         }
         else
         {
             this.target_R = new Vector3(float.NaN, float.NaN, float.NaN);
             this.target_V = new Vector3(float.NaN, float.NaN, float.NaN);
+            guide = false;
         }
-        gameobject.transform.position = this.mm.move_missile(this.mm.missile_R, this.mm.missile_V, this.target_R, this.target_V, guide);
-        if (this.mm.missile_V != Vector3.zero)
+        //position of missile
+        gameobject.transform.position = this.mm.move_missile(this.mm.Missile_R, this.mm.Missile_V, this.target_R, this.target_V, guide);
+        //rotation of missile
+        if (this.mm.Missile_V != Vector3.zero)
         {
-            gameobject.transform.rotation = Quaternion.LookRotation(this.mm.missile_V);
+            gameobject.transform.rotation = Quaternion.LookRotation(this.mm.Missile_V);
         }
     }
 
     public double get_dis()
     {
-        return this.mm.distance_traveled;
+        return this.mm.Distance_traveled;
     }
 
     public void set_V(Vector3 V)
     {
-        this.mm.missile_V = V;
+        this.mm.Missile_V = V;
     }
 
     public Vector3 get_V()
     {
-        return this.mm.missile_V;
+        return this.mm.Missile_V;
     }
 
     public void set_R(Vector3 R)
     {
-        this.mm.missile_R = R;
+        this.mm.Missile_R = R;
     }
 
-    public void set_target(EnemyView target)
+    public void set_target(GameObject target)
     {
         this.target = target;
-        this.target_R = target.eR;
+        this.target_R = target.GetComponent<EnemyView>().eR;
     }
 
     public Vector3 get_target_R()

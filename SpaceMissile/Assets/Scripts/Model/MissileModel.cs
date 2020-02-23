@@ -4,28 +4,15 @@ using UnityEngine;
 
 public class MissileModel : SpaceElement
 {
-    public Vector3 missile_R;
-    public Vector3 missile_V;
-    public Vector3 missile_A;
-    public double distance_traveled = 0;
-    Vector3 last_position;
-    public Vector3 U;
+    private Vector3 missile_R;
+    private Vector3 missile_V;
+    private Vector3 missile_A;
+    private Vector3 last_position;
+    private Vector3 U;
 
-    double damage = 500;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    
+    private double distance_traveled = 0;
+    private double damage = 500;
+    private float timeError = 0.1f;
 
     public MissileModel(Vector3 missile_R, Vector3 missile_V, Vector3 missile_A)
     {
@@ -46,7 +33,7 @@ public class MissileModel : SpaceElement
             U = Vector3.zero;
         }
 
-        this.missile_V = mV + U * Time.deltaTime; //count velocity
+        this.missile_V = mV + U / timeError * Time.deltaTime; //count velocity
         this.missile_R = mR + this.missile_V * Time.deltaTime; //count position
         this.distance_traveled += Vector3.Distance(this.missile_R, this.last_position); //count distance
         this.last_position = this.missile_R;
@@ -63,5 +50,23 @@ public class MissileModel : SpaceElement
     public double get_damage()
     {
         return this.damage;
+    }
+
+    public Vector3 Missile_V
+    {
+        get { return this.missile_V; }
+        set { this.missile_V = value; }
+    }
+
+    public Vector3 Missile_R
+    {
+        get { return this.missile_R; }
+        set { this.missile_R = value; }
+    }
+
+    public double Distance_traveled
+    {
+        get { return this.distance_traveled; }
+        set { this.distance_traveled = value; }
     }
 }
