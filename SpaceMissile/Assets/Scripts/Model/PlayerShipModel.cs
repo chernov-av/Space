@@ -12,23 +12,16 @@ public class PlayerShipModel : SpaceModel
     float shootspeed = 0.1f;
     float energylaserreduction = 0.01f;
 
-    public PlayerShipModel(double armor,double shield,int ammo, double energy, int missiles)
-    {
-        this.armor = armor;
-        this.shield = shield;
-        this.ammo = ammo;
-        this.energy = energy;
-        this.missiles = missiles;
-    }
-
+   
     public void reduce_ammo()
     {
         this.ammo -= 1;
     }
    
-    public int get_ammo()
+    public int Ammo
     {
-        return this.ammo;
+        get { return this.ammo; }
+        set { this.ammo = value; }
     }
 
     public void reduce_missiles()
@@ -36,24 +29,28 @@ public class PlayerShipModel : SpaceModel
         this.missiles -= 1;
     }
 
-    public int get_missiles()
+    public int Missiles
     {
-        return this.missiles;
+        get { return this.missiles; }
+        set { this.missiles = value; }
     }
 
-    public double get_armor()
+    public double Armor
     {
-        return this.shield;
+        get { return this.armor; }
+        set { this.armor = value; }
     }
 
-    public double get_shield()
+    public double Schield
     {
-        return this.shield;
+        get { return this.shield; }
+        set { this.shield = value; }
     }
 
-    public double get_energy()
+    public double Energy
     {
-        return this.energy;
+        get { return this.energy; }
+        set { this.energy = value; }
     }
 
     public void reduce_energy()

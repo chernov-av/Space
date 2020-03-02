@@ -6,8 +6,10 @@ public class WeaponController : SpaceController
 {
     public GameObject Missile;
     public GameObject Bullet;
+    public LayerMask mask;
     float ShootTimer = 0.0f;
     float EnergyLaserTimer = 0.0f;
+    public float shooringRange;
 
     public enum weapon_modes { MG=1, Missiles=2, Laser=3, Energy=4 };
     public weapon_modes current_mode = weapon_modes.MG;
@@ -129,13 +131,15 @@ public class WeaponController : SpaceController
         var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
         PlayerShipModel psm = spaceship[0].GetComponent<PlayerShipView>().psc.get_psm();
         
-        if (psm.get_ammo() > 0 & this.ShootTimer<=0)
+        if (psm.Ammo > 0 & this.ShootTimer<=0)
         {
-            var shell = Instantiate(Bullet, spaceship[0].transform.position + new Vector3(8.0f, 0.0f, 0.0f), spaceship[0].transform.rotation) as GameObject;
+            var xError = Quaternion.AngleAxis(Random.Range(-this.shooringRange, this.shooringRange), transform.up);
+            var yError = Quaternion.AngleAxis(Random.Range(-this.shooringRange, this.shooringRange), transform.right);
+            var shell = Instantiate(Bullet, spaceship[0].transform.position + new Vector3(8.0f, 0.0f, 0.0f), spaceship[0].transform.rotation*xError*yError) as GameObject;
             shell.transform.parent = spaceship[0].transform;
             shell.transform.localPosition = new Vector3(0.0f, 0.0f, 8.0f);
             shell.transform.parent = null;
-            shell.GetComponent<Rigidbody>().AddForce(transform.forward * 0.5f, ForceMode.Impulse);
+            shell.GetComponent<Rigidbody>().AddForce(shell.transform.forward * 0.5f, ForceMode.Impulse);
             psm.reduce_ammo();
             this.ShootTimer = psm.get_shootspeed();
         }
@@ -146,7 +150,7 @@ public class WeaponController : SpaceController
         var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
         PlayerShipModel psm = spaceship[0].GetComponent<PlayerShipView>().psc.get_psm();
 
-        if (psm.get_energy() > 0 & this.EnergyLaserTimer <= 0)
+        if (psm.Energy > 0 & this.EnergyLaserTimer <= 0)
         {
             psm.reduce_energy();
             this.EnergyLaserTimer = psm.get_energylaserreduction();
@@ -189,7 +193,7 @@ public class WeaponController : SpaceController
             MissileView missile = missiles[0].GetComponent<MissileView>();
             missile.guide = true;
             Vector3 Aeu = missile.transform.rotation * Vector3.forward;
-            Vector3 V = Aeu * 50;
+            Vector3 V = Aeu * 150;
             missile.mc.set_V(V);
             missile.mc.set_R(missiles[0].transform.position);
             //toggle fire
@@ -225,11 +229,18 @@ public class WeaponController : SpaceController
             }
         }
         //ray to mouse position to fix target
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
-        
+        //Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
         RaycastHit hit;
-        
-        if (Physics.Raycast(ray, out hit, 1000))
+
+        //if (Physics.Raycast(ray, out hit, 10000))
+
+        Vector3 startPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.height / 2, Screen.width / 2, 0));
+        startPos.z = Camera.main.transform.position.z;
+
+        Vector3 dir = Camera.main.transform.TransformDirection(Vector3.forward);
+
+        if (Physics.SphereCast(startPos, 10.0f, dir, out hit, 1000, this.mask))
         {
             print(hit.transform.name);
             GameObject target = hit.collider.gameObject;
@@ -239,7 +250,7 @@ public class WeaponController : SpaceController
                 MissileView missile = missiles[0].GetComponent<MissileView>();
                 missile.mc.set_target(target);
             }
-        }        
+        }
     }
 
 

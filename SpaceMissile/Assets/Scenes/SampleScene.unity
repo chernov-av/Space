@@ -511,6 +511,10 @@ MonoBehaviour:
   angle: 0
   Missile: {fileID: 3883479290748716998, guid: 30ba64a18ff25c44d80387d0a6d2a2b0, type: 3}
   Bullet: {fileID: 5762014561391099168, guid: 0ebdef1bf937c5c42a6d8da39fa983d8, type: 3}
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
+  shooringRange: 0
   current_mode: 1
 --- !u!1 &184895188
 GameObject:
@@ -1157,6 +1161,10 @@ PrefabInstance:
     - target: {fileID: 1405876428854690, guid: 12e2965e034095b40b035c26bdecd5ed, type: 3}
       propertyPath: m_TagString
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1405876428854690, guid: 12e2965e034095b40b035c26bdecd5ed, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4312138073662048, guid: 12e2965e034095b40b035c26bdecd5ed, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1954,6 +1962,10 @@ PrefabInstance:
     - target: {fileID: 1626707168461546, guid: 79e4c0d1647edb24e82e40e6b4bcaa7b, type: 3}
       propertyPath: m_TagString
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1626707168461546, guid: 79e4c0d1647edb24e82e40e6b4bcaa7b, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4775774438825354, guid: 79e4c0d1647edb24e82e40e6b4bcaa7b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2903,6 +2915,32 @@ MonoBehaviour:
   SliderEnergy: {fileID: 1096543195}
   TextMode: {fileID: 1185891186}
   TextAmmo: {fileID: 1763849216}
+--- !u!114 &1403564503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403564500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bedd1fdaed2f94b48a86155a4f14d92c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosion: {fileID: 0}
+  angle: 0
+  controlEnable: 1
+  mouseVisibility: 0
+  speed: 0
+  acceleration: 3
+  rollFactor: 0.05
+  yawFactor: 0.5
+  pitchFactor: 0.5
+  currSpeed: 0
+  maxForwardSpeed: 100
+  maxBackwardSpeed: -100
+  mouseSensitivity: 0.1
+  controlVector: {x: 0, y: 0, z: 0}
 --- !u!64 &1403564504
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2933,33 +2971,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1403564506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1403564500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1987fee77aa1d71418b6cc6a96b1e342, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  explosion: {fileID: 0}
-  angle: 0
-  mousePosition: {x: 0, y: 0, z: 0}
-  mouseDeadZone: 0.1
-  thrust: {x: 0, y: 0, z: 0}
-  throttle: 100
-  throttleAmount: 0.25
-  maxThrottle: 65
-  minThrottle: -2
-  pitchStrength: 5
-  yawStrength: 5
-  rollStrength: 5
-  flightAssist: 1
-  impulseMode: 0
-  impulseCoolDown: 3
 --- !u!114 &1403564507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2976,6 +2987,10 @@ MonoBehaviour:
   angle: 0
   Missile: {fileID: 3883479290748716998, guid: 30ba64a18ff25c44d80387d0a6d2a2b0, type: 3}
   Bullet: {fileID: 5762014561391099168, guid: 0ebdef1bf937c5c42a6d8da39fa983d8, type: 3}
+  mask:
+    serializedVersion: 2
+    m_Bits: 256
+  shooringRange: 0.5
   current_mode: 1
 --- !u!1 &1462500170
 GameObject:

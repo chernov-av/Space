@@ -18,7 +18,9 @@ public class EnemyView : SpaceView
     {
         this.eR = transform.position;
         this.eA = transform.rotation.eulerAngles;
-        this.ec = new EnemyController(this.eR, this.eV, this.eA,this.armor,this.shield);
+        //this.ec = new EnemyController(this.eR, this.eV, this.eA,this.armor,this.shield);
+        this.ec = gameObject.AddComponent<EnemyController>();
+        this.ec.set_enemyObjectModel(gameObject, this.eR, this.eV, this.eA, this.armor, this.shield);
     }
 
     // Update is called once per frame

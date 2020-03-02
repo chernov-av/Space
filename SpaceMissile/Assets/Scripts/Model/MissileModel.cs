@@ -13,14 +13,14 @@ public class MissileModel : SpaceElement
     private double distance_traveled = 0;
     private double damage = 500;
     private float timeError = 0.1f;
-
+    /*
     public MissileModel(Vector3 missile_R, Vector3 missile_V, Vector3 missile_A)
     {
         this.missile_R = missile_R;
         this.missile_V = missile_V;
         this.missile_A = missile_A;
         this.last_position = missile_R;
-    }
+    }*/
 
     public Vector3 move_missile(Vector3 mR, Vector3 mV, Vector3 tR, Vector3 tV, bool guide)
     {
@@ -62,6 +62,17 @@ public class MissileModel : SpaceElement
     {
         get { return this.missile_R; }
         set { this.missile_R = value; }
+    }
+    public Vector3 Missile_A
+    {
+        get { return this.missile_A; }
+        set { this.missile_A = value; }
+    }
+
+    public Vector3 Last_position
+    {
+        get { return this.last_position; }
+        set { this.last_position = value; }
     }
 
     public double Distance_traveled

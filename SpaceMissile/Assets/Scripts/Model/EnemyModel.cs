@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class EnemyModel : SpaceModel
 {
-    public Vector3 enemy_R;
-    public Vector3 enemy_V;
-    public Vector3 enemy_A;
+    private Vector3 enemy_R;
+    private Vector3 enemy_V;
+    private Vector3 enemy_A;
 
-    public double armor;
-    public double shield;
+    private double armor;
+    private double shield;
 
     public EnemyModel(Vector3 enemy_R, Vector3 enemy_V, Vector3 enemy_A, double armor, double shield)
     {
@@ -29,5 +29,34 @@ public class EnemyModel : SpaceModel
     {
         this.armor -= damage;
     }
-  
+
+    public Vector3 Enemy_R
+    {
+        get { return this.enemy_R; }
+        set { this.enemy_R = value; }
+    }
+
+    public Vector3 Enemy_V
+    {
+        get { return this.enemy_V; }
+        set { this.enemy_V = value; }
+    }
+
+    public Vector3 Enemy_A
+    {
+        get { return this.enemy_A; }
+        set { this.enemy_A = value; }
+    }
+
+    public double Armor
+    {
+        get { return this.armor; }
+        set { this.armor = value; }
+    }
+
+    public double Shield
+    {
+        get { return this.shield; }
+        set { this.shield = value; }
+    }
 }

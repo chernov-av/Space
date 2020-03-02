@@ -4,36 +4,40 @@ using UnityEngine;
 
 public class PlayerShipController : SpaceController
 {
-    PlayerShipModel psm;
+    PlayerShipModel psm;       
 
-    public PlayerShipController(double arm, double sh, int am, double en, int mis)
+    public void set_playerShipModelObject(GameObject gameObject, double arm, double sh, int am, double en, int mis)
     {
-        psm = new PlayerShipModel(arm, sh, am, en, mis);
-
+        this.psm = gameObject.AddComponent<PlayerShipModel>();
+        this.psm.Armor = arm;
+        this.psm.Schield = sh;
+        this.psm.Ammo = am;
+        this.psm.Energy = en;
+        this.psm.Missiles = mis;
     }
 
     public int get_ammo()
     {
-        return psm.get_ammo();
+        return psm.Ammo;
     }
 
     public double get_armor()
     {
-        return psm.get_armor();
+        return psm.Armor;
     }
 
     public double get_shield()
     {
-        return psm.get_shield();
+        return psm.Schield;
     }
 
     public double get_energy()
     {
-        return psm.get_energy();
+        return psm.Energy;
     }
     public int get_missiles()
     {
-        return psm.get_missiles();
+        return psm.Missiles;
     }
 
     public PlayerShipModel get_psm()

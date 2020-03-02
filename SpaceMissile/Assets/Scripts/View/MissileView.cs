@@ -19,7 +19,9 @@ public class MissileView : SpaceView
         //Controller object creation
         this.mR = transform.position;
         this.mA = transform.rotation.eulerAngles;
-        this.mc = new MissileController(this.mR, this.mV, this.mA);
+        //this.mc = new MissileController(this.mR, this.mV, this.mA);
+        this.mc = gameObject.AddComponent<MissileController>();
+        this.mc.set_missileModelObject(gameObject, this.mR, this.mV, this.mA);
     }
 
     // Update is called once per frame

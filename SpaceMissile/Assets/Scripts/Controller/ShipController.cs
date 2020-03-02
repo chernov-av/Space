@@ -1,311 +1,90 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-
-/**
- * ShipController.cs - A Unity3D player controller inspired by Elite: Dangerous.
- * 
- * This is a physics based controller and as such, requires a RigidBody component.
- * NOTE: Impulse mode is experimental and unfinished.
- * 
- * Author: Jeff Pizano
- **/
 public class ShipController : SpaceController
 {
-    Rigidbody ship;
+    Rigidbody body;
 
-    float qtrScreenH;
-    float qtrScreenW;
+    public bool controlEnable;
+    public bool mouseVisibility;
 
-    bool adjustPitch = false;
-    bool adjustYaw = false;
-    bool adjustRoll = false;
-    bool adjustThrustX = false;
-    bool adjustThrustY = false;
-    bool adjustThrustZ = false;
+    public float speed = 0;
+    public float acceleration = 0;
+    public float rollFactor = 0;
+    public float yawFactor = 0;
+    public float pitchFactor = 0;
 
-    [ReadOnly]
-    public Vector3 mousePosition;
-    public float mouseDeadZone = 0.1f;
-    Vector3 centerScreen;
+    public float currSpeed = 0;
+    public float maxForwardSpeed = 0;
+    public float maxBackwardSpeed = 0;
 
-    float pitch = 0.0f;
-    float yaw = 0.0f;
-    float roll = 0.0f;
-
-    float pitchDiff = 0.0f;
-    float yawDiff = 0.0f;
-
-    public Vector3 thrust = Vector3.zero;
+    public float mouseSensitivity = 0.1f;
     
-    // THROTTLE
-    public float throttle = 100f;
-    [Range(0,50)]
-    public float throttleAmount = 0.25f;
-    [Range(0,500f)]
-    public float maxThrottle = 4f;
-    [Range(-500,100f)]
-    public float minThrottle = -2f;
+    float horizontalAxis;
+    float verticalAxis;
+    float rollAxis;
 
-    // FLIGHT CONTROL PARAMETERS
-    [Range(0, 100f)]
-    public float pitchStrength = 1.5f;
-    [Range(0, 100f)]
-    public float yawStrength = 1.5f;
-    [Range(0, 10f)]
-    public float rollStrength = 1.5f;
-
-    public bool flightAssist = false;
-
-    // IMPULSE MODE
-    float impulseTimer;
-    public bool impulseMode = false;
-    public float impulseCoolDown = 3.0f;
-
-
-    /// <summary>
-    /// Initialize ship controller and capture screen information.
-    /// </summary>
-    void Start () {
-        centerScreen = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-        ship = GetComponent<Rigidbody>();
-        qtrScreenH = Screen.height * 0.25f;
-        qtrScreenW = Screen.width * 0.25f;
-	}
-
-
-    /// <summary>
-    /// Called by the UnityEngine, should update once per frame.
-    /// </summary>
-    void Update ()
+    public Vector3 controlVector = Vector3.zero;
+    // Start is called before the first frame update
+    void Start()
     {
-        // Remove this for production build
-        DebugUpdate();
-        //
+        this.body = GetComponent<Rigidbody>();
+    }
 
-        UpdateTimers();
-        InputUpdate();
-
-        if (flightAssist)
+    private void FixedUpdate()
+    {
+        if (!this.mouseVisibility)
         {
-            DampenTransform();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
-        
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    void UpdateTimers()
-    {
-        impulseTimer += Time.deltaTime;
-    }
-
-
-    /// <summary>
-    /// Fixed step update used for physics calculations.
-    /// </summary>
-    void FixedUpdate()
-    {
-        InputFixedUpdate();
-    }
-
-
-    /// <summary>
-    /// Let's try to keep things as clean as possible. property dumps should be out here.
-    /// </summary>
-    void DebugUpdate()
-    {
-
-    }
-
-
-    /// <summary>
-    /// This method handles input that doesn't deal with the physics engine.
-    /// </summary>
-    void InputUpdate()
-    {
-        mousePosition = Input.mousePosition;
-        pitch = GetPitchValue();
-        yaw = GetYawValue();
-        roll = GetRollValue();
-        thrust.x = Input.GetAxis("Horizontal");
-        thrust.y = GetThrustY();
-        thrust.z = Input.GetAxis("Vertical"); // Z is forward/Back
-
-        // Set Flags
-        adjustPitch = Mathf.Abs(pitch) > 0.1f;
-        adjustYaw = Mathf.Abs(yaw) > 0.1f;
-        adjustRoll = roll != 0;
-        adjustThrustX = Mathf.Abs(thrust.x) > 0.1f;
-        adjustThrustY = thrust.y != 0;
-        adjustThrustZ = Mathf.Abs(thrust.z) > 0.1f;
-
-
-        // Throttle up
-        if (Input.GetKey(KeyCode.Equals))
+        if (this.controlEnable)
         {
-            throttle += throttleAmount;
-        }
 
-        // Throttle down
-        if (Input.GetKey(KeyCode.Minus))
-        {
-            throttle -= throttleAmount;
-        }
+            //set movement axis
+            this.horizontalAxis = Input.GetAxis("Mouse X");
+            this.verticalAxis = Input.GetAxis("Mouse Y");
+            this.rollAxis = Input.GetAxis("Horizontal");
 
-        // Toggle Inertial dampeners
-        if (Input.GetKeyUp(KeyCode.CapsLock))
-        {
-            flightAssist = !flightAssist;
-        }
+            //Constraints
+            this.horizontalAxis = Mathf.Clamp(this.horizontalAxis, -this.yawFactor, this.yawFactor);
+            this.verticalAxis = Mathf.Clamp(this.verticalAxis, -this.pitchFactor, this.pitchFactor);
 
-        throttle = Mathf.Clamp(throttle, minThrottle, maxThrottle);
-    }
-
-
-    /// <summary>
-    /// This method handles the physics related to input.
-    /// </summary>
-    void InputFixedUpdate()
-    {
-        // ADJUST PITCH (FORWARD/BACK/TILT/LOCAL X)
-        if (adjustPitch)
-            ship.AddTorque(transform.right * (-pitch * pitchStrength), ForceMode.Force);
-
-        // ADJUST YAW (LEFT/RIGHT/TURN/LOCAL Y)
-        if (adjustYaw)
-            ship.AddTorque(transform.up * (yaw * yawStrength), ForceMode.Force);
-
-        // ADJUST ROLL (CLOCKWISE/COUNTERCLOCKWISE/LOCAL Z)
-        if(adjustRoll)
-            ship.AddTorque(transform.forward * (roll * rollStrength), ForceMode.Force);
-
-        // ADJUST THRUST Z (FORWARD/BACK/LOCAL Z)
-        if(adjustThrustZ)
-        {
-            if(!impulseMode)
+            this.controlVector.x -= this.verticalAxis * this.mouseSensitivity;
+            this.controlVector.y += this.horizontalAxis * this.mouseSensitivity;
+            //this.controlVector.z = -this.rollAxis * this.rollFactor;
+            if (Input.GetKey("a"))
             {
-                ship.AddForce(transform.forward * (thrust.z * throttle), ForceMode.Force);
+                this.controlVector.z -= this.rollAxis * this.rollFactor;
             }
-            else if(impulseTimer >= impulseCoolDown)
+            else if (Input.GetKey("d"))
             {
-                ship.AddForce(transform.forward * (thrust.z * throttle), ForceMode.Impulse);
-                impulseTimer = 0.0f;
-            }
-        }
+                this.controlVector.z -= this.rollAxis * this.rollFactor;
+            }           
 
-        // ADJUST THRUST X (LEFT/RIGHT/STRAFE/LOCAL X)
-        if (adjustThrustX)
-        {
-            if(!impulseMode)
-            {
-                ship.AddForce(transform.right * (thrust.x * throttle), ForceMode.Force);
-            }
-            else if (impulseTimer >= impulseCoolDown)
-            {
-                ship.AddForce(transform.right * (thrust.x * throttle), ForceMode.Impulse);
-                impulseTimer = 0.0f;
-            }
-        }
+            this.body.angularVelocity = transform.TransformDirection(this.controlVector);
 
-        // ADJUST THRUST Y (UP/DOWN/ASCEND/DESCEND/LOCAL Y)
-        if(adjustThrustY)
-        {
-            if(!impulseMode)
+            if (Input.GetKey("w"))
             {
-                ship.AddForce(transform.up * (throttle * thrust.y), ForceMode.Force);
+                this.currSpeed += this.acceleration * Time.deltaTime;
+                this.currSpeed = Mathf.Clamp(this.currSpeed, this.maxBackwardSpeed, this.maxForwardSpeed);
             }
-            if (impulseMode && impulseTimer >= impulseCoolDown)
+            else if (Input.GetKey("s"))
             {
-                ship.AddForce(transform.up * (throttle * thrust.y), ForceMode.Impulse);
-                impulseTimer = 0.0f;
-            }
+                if (this.currSpeed > 0.5f || this.currSpeed < 0)
+                {
+                    this.currSpeed -= this.acceleration * Time.deltaTime;
+                }
+                else
+                {
+                    this.currSpeed = 0;
+                }
+                this.currSpeed = Mathf.Clamp(this.currSpeed, this.maxBackwardSpeed, this.maxForwardSpeed);
+            }                       
+
+            this.body.velocity = transform.TransformDirection(new Vector3(0, 0, this.currSpeed));
         }
     }
-
-
-    /// <summary>
-    /// Returns a pitch value based on the relative distance of the mouse from the center of the screen.
-    /// </summary>
-    /// <returns></returns>
-    float GetPitchValue()
-    {
-        pitchDiff = -(centerScreen.y - mousePosition.y);
-        pitchDiff = Mathf.Clamp(pitchDiff,-qtrScreenH,qtrScreenH);
-
-        return (pitchDiff / qtrScreenH);
-    }
-
-
-    /// <summary>
-    /// Returns a yaw value based on the relative position of the mouse from the center of the screen.
-    /// </summary>
-    /// <returns></returns>
-    float GetYawValue()
-    {
-        yawDiff = -(centerScreen.x - mousePosition.x);
-        yawDiff = Mathf.Clamp(yawDiff, -qtrScreenW, qtrScreenW);
-
-        return (yawDiff / qtrScreenW);
-    }
-
-
-    /// <summary>
-    /// Returns a digital axis.
-    /// </summary>
-    /// <returns></returns>
-    float GetRollValue()
-    {
-        if(Input.GetKey(KeyCode.Q))
-            return 1.0f;
-
-        if(Input.GetKey(KeyCode.E))
-            return -1.0f;
-
-        return 0;
-    }
-
-
-    /// <summary>
-    /// Returns a digital axis.
-    /// </summary>
-    /// <returns></returns>
-    float GetThrustY()
-    {
-        if(Input.GetKey(KeyCode.Space))
-            return 1;
-
-        if(Input.GetKey(KeyCode.LeftShift))
-            return -1;
-
-        return 0.0f;
-    }
-
-
-    /// <summary>
-    /// Dampens the velocity and angular velocity of the rigid body over time.
-    /// </summary>
-    void DampenTransform()
-    {
-        Vector3 nVeloc = new Vector3(
-            Mathf.Lerp(ship.velocity.x, 0, Time.deltaTime * 0.75f),
-            Mathf.Lerp(ship.velocity.y, 0, Time.deltaTime * 0.75f),
-            Mathf.Lerp(ship.velocity.z, 0, Time.deltaTime * 0.75f)
-            );
-
-        Vector3 nAVeloc = new Vector3(
-            Mathf.Lerp(ship.angularVelocity.x, 0, Time.deltaTime),
-            Mathf.Lerp(ship.angularVelocity.y, 0, Time.deltaTime),
-            Mathf.Lerp(ship.angularVelocity.z, 0, Time.deltaTime)
-            );
-
-        ship.velocity = nVeloc;
-        ship.angularVelocity = nAVeloc;
-    }
-
-   
 }

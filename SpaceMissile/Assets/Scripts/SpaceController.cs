@@ -20,10 +20,13 @@ public class MissileController : SpaceController
     Vector3 target_R = new Vector3(float.NaN,float.NaN,float.NaN);
     Vector3 target_V;
 
-    public MissileController(Vector3 mR, Vector3 mV, Vector3 mA)
+    public void set_missileModelObject(GameObject gameObject, Vector3 mR, Vector3 mV, Vector3 mA)
     {
-        this.mm = new MissileModel(mR, mV, mA);
-        //this.mm = gameObject.AddComponent<MissileModel>();
+        this.mm=gameObject.AddComponent<MissileModel>();
+        this.set_R(mR);
+        this.set_V(mV);
+        this.set_A(mA);
+        this.mm.Last_position = mR;
     }
 
     public void missile_movement(GameObject gameobject, bool guide)
@@ -44,7 +47,7 @@ public class MissileController : SpaceController
                     Vector3 targetDir = child.gameObject.transform.position - this.mm.Missile_R;
                     //get angle between camera and viewpoint
                     angle = Vector3.Angle(targetDir, gameobject.transform.forward);
-                    print(angle);
+                    
                     Camera cam = gameobject.GetComponentInChildren<Camera>();
 
                     if (angle < cam.fieldOfView / 2)
@@ -82,6 +85,11 @@ public class MissileController : SpaceController
     public double get_dis()
     {
         return this.mm.Distance_traveled;
+    }
+
+    public void set_A(Vector3 A)
+    {
+        this.mm.Missile_A = A;
     }
 
     public void set_V(Vector3 V)
@@ -144,9 +152,15 @@ public class MissileController : SpaceController
 public class ShellController: SpaceController
 {
     ShellModel sm;
-    public ShellController()
+    public ShellController(GameObject gameObject)
     {
-        sm = new ShellModel();
+        //sm = new ShellModel();
+        //sm = gameObject.AddComponent<ShellModel>();
+    }
+
+    public void set_shellModelObject(GameObject gameObject)
+    {
+        sm = gameObject.AddComponent<ShellModel>();
     }
 
     public double get_damage()
@@ -180,9 +194,15 @@ public class ShellController: SpaceController
 public class EnemyController : SpaceController
 {
     EnemyModel em;
-    public EnemyController(Vector3 eR, Vector3 eV, Vector3 eA,double eArm,double eSh)
+    
+    public void set_enemyObjectModel(GameObject gameObject, Vector3 eR, Vector3 eV, Vector3 eA, double eArm, double eSh)
     {
-        this.em = new EnemyModel(eR, eV, eA, eArm, eSh);
+        this.em = gameObject.AddComponent<EnemyModel>();
+        this.em.Enemy_A = eA;
+        this.em.Enemy_V = eV;
+        this.em.Enemy_R = eR;
+        this.em.Armor = eArm;
+        this.em.Shield = eSh;
     }
 
     public void enemy_movement()
@@ -192,12 +212,12 @@ public class EnemyController : SpaceController
 
     public double get_armor()
     {
-        return this.em.armor;
+        return this.em.Armor;
     }
 
     public double get_shield()
     {
-        return this.em.shield;
+        return this.em.Shield;
     }
 
     public void hit(GameObject gameObject, double damage)

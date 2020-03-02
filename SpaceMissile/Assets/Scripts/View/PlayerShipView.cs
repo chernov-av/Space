@@ -19,7 +19,9 @@ public class PlayerShipView : SpaceElement
     // Start is called before the first frame update
     void Start()
     {
-        psc = new PlayerShipController(this.armor, this.shield, this.ammo, this.energy,this.missiles);
+        this.psc = gameObject.AddComponent<PlayerShipController>();
+        this.psc.set_playerShipModelObject(gameObject, this.armor, this.shield, this.ammo, this.energy, this.missiles);
+        
         this.SliderArmor.maxValue = (float)this.armor;
         this.SliderShield.maxValue = (float)this.shield;
         this.SliderEnergy.maxValue = (float)this.energy;

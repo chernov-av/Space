@@ -12,7 +12,9 @@ public class ShellView : SpaceView
     // Start is called before the first frame update
     void Start()
     {
-        sc = new ShellController();
+        //sc = new ShellController();
+        sc = gameObject.AddComponent<ShellController>();
+        sc.set_shellModelObject(gameObject);
         sR = transform.position;
     }
 
