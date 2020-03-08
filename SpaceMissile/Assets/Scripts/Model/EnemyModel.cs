@@ -30,6 +30,26 @@ public class EnemyModel : SpaceModel
         this.armor -= damage;
     }
 
+    public void count_laser_damage(double damage)
+    {
+        if (this.shield > 0)
+        {
+            this.shield -= damage;
+        }
+        else
+        {
+            this.armor -= damage * 10;
+        }
+    }
+
+    public void count_energy_damage(double damage)
+    {
+        if (this.shield > 0)
+        {
+            this.shield -= damage;
+        }
+    }
+
     public Vector3 Enemy_R
     {
         get { return this.enemy_R; }

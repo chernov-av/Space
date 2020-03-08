@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ShellModel : SpaceElement
 {
-    double damage = 5;
+    float damage = 5;
 
-    public double get_damage()
+    public float get_damage()
     {
         return this.damage;
     }

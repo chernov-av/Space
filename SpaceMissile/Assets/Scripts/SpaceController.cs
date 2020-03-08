@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class SpaceController : SpaceElement
 {
-    public GameObject explosion;
     public float angle;
     protected Camera cam;
    
@@ -126,7 +125,7 @@ public class MissileController : SpaceController
     public void missile_collapse(GameObject gameObject)
     {
         //without target
-        Object exp = Instantiate(Resources.Load("Prefabs/BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Object exp = Instantiate(Resources.Load("Prefabs/WFX_ExplosionMissile"), gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
         Destroy(exp, 4.0f);
     }
@@ -143,7 +142,7 @@ public class MissileController : SpaceController
 
             GameObject.FindGameObjectsWithTag("View")[0].GetComponent<HitmarkerView>().getHitmarker();
         }
-        Object exp = Instantiate(Resources.Load("Prefabs/BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Object exp = Instantiate(Resources.Load("Prefabs/WFX_ExplosionMissile"), gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
         Destroy(exp, 4.0f);
     }
@@ -152,15 +151,10 @@ public class MissileController : SpaceController
 public class ShellController: SpaceController
 {
     ShellModel sm;
-    public ShellController(GameObject gameObject)
-    {
-        //sm = new ShellModel();
-        //sm = gameObject.AddComponent<ShellModel>();
-    }
-
+    
     public void set_shellModelObject(GameObject gameObject)
     {
-        sm = gameObject.AddComponent<ShellModel>();
+        this.sm = gameObject.AddComponent<ShellModel>();
     }
 
     public double get_damage()
@@ -177,17 +171,67 @@ public class ShellController: SpaceController
         // on target hit
         if (collision.gameObject.tag == "Enemy")
         {
-            // Destroy(collision.gameObject);
             EnemyView enemy = collision.gameObject.GetComponent<EnemyView>();
-            //enemy.ec.destroy(collision.gameObject);
             ShellView sw = gameObject.GetComponent<ShellView>();
             enemy.ec.hit(gameObject, sw.sc.get_damage());
             GameObject.FindGameObjectsWithTag("View")[0].GetComponent<HitmarkerView>().getHitmarker();
 
         }
-        Object exp = Instantiate(Resources.Load("Prefabs/BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Object exp = Instantiate(Resources.Load("Prefabs/WFX_ExplosionShell"), gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
         Destroy(exp, 4.0f);
+    }
+}
+
+public class EnergyController : SpaceController
+{
+    EnergyModel em;
+
+    public void set_laserModelObject(GameObject gameObject)
+    {
+        this.em = gameObject.AddComponent<EnergyModel>();
+    }
+
+    public void energy_shell_destroy(GameObject gameObject)
+    {
+        Destroy(gameObject);
+    }
+
+    public void energy_hit(GameObject gameObject, Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            // Destroy(collision.gameObject);
+            EnemyView enemy = collision.gameObject.GetComponent<EnemyView>();
+            //enemy.ec.destroy(collision.gameObject);
+            EnergyView ew = gameObject.GetComponent<EnergyView>();
+            enemy.ec.hit(gameObject, em.get_damage());
+
+            GameObject.FindGameObjectsWithTag("View")[0].GetComponent<HitmarkerView>().getHitmarker();
+        }
+        Object exp = Instantiate(Resources.Load("Prefabs/WFX_ExplosionMissile"), gameObject.transform.position, gameObject.transform.rotation);
+        Destroy(gameObject);
+        Destroy(exp, 4.0f);
+    }
+}
+
+public class LaserController : SpaceController
+{
+    LaserModel lm;
+
+    public void set_laserModelObject(GameObject gameObject)
+    {
+        this.lm = gameObject.AddComponent<LaserModel>();
+    }
+
+    public void laser_hit(GameObject gameObject, GameObject targetObject)
+    {
+        if (targetObject.tag == "Enemy")
+        {
+            EnemyView enemy = targetObject.GetComponent<EnemyView>();
+            enemy.ec.hit(gameObject, lm.get_damage());
+            GameObject.FindGameObjectsWithTag("View")[0].GetComponent<HitmarkerView>().getHitmarker();
+        }
     }
 }
 
@@ -231,12 +275,20 @@ public class EnemyController : SpaceController
             case "Shell":
                 em.count_shell_damage(damage);
                 break;
+
+            case "Laser":
+                em.count_laser_damage(damage);
+                break;
+
+            case "Energy":
+                em.count_energy_damage(damage);
+                break;
         }
     }
 
     public void destroy(GameObject gameObject)
     {
-        Object exp = Instantiate(Resources.Load("Prefabs/BigExplosionEffect"), gameObject.transform.position, gameObject.transform.rotation);
+        Object exp = Instantiate(Resources.Load("Prefabs/WFX_ExplosiveSmokeSpaceShip"), gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
         Destroy(exp, 4.0f);
 

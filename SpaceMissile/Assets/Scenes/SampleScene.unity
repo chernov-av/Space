@@ -258,7 +258,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &102815417
 GameObject:
@@ -493,7 +493,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6a6a1716d28454289cc54e8fa436d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion: {fileID: 1000011797152326, guid: acf39d9f4addf294d93fa56fa373961b, type: 3}
   angle: 0
 --- !u!114 &183579412
 MonoBehaviour:
@@ -507,14 +506,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced9d775c263f404291b14e975bdff2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion: {fileID: 0}
   angle: 0
   Missile: {fileID: 3883479290748716998, guid: 30ba64a18ff25c44d80387d0a6d2a2b0, type: 3}
   Bullet: {fileID: 5762014561391099168, guid: 0ebdef1bf937c5c42a6d8da39fa983d8, type: 3}
+  Lazer: {fileID: 6345746231374780270, guid: f03acc3d6ccdaf642a4de3ebe61f9dde, type: 3}
+  EnergyShell: {fileID: 0}
   mask:
     serializedVersion: 2
     m_Bits: 0
-  shooringRange: 0
+  shootingRange: 0
   current_mode: 1
 --- !u!1 &184895188
 GameObject:
@@ -2927,7 +2927,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bedd1fdaed2f94b48a86155a4f14d92c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion: {fileID: 0}
   angle: 0
   controlEnable: 1
   mouseVisibility: 0
@@ -2983,14 +2982,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced9d775c263f404291b14e975bdff2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion: {fileID: 0}
   angle: 0
   Missile: {fileID: 3883479290748716998, guid: 30ba64a18ff25c44d80387d0a6d2a2b0, type: 3}
   Bullet: {fileID: 5762014561391099168, guid: 0ebdef1bf937c5c42a6d8da39fa983d8, type: 3}
+  Lazer: {fileID: 6377138853328303499, guid: e8110a9cfc5a9b846b8156913351dac5, type: 3}
+  EnergyShell: {fileID: 7249708701578811674, guid: ed3deb3fd3e517246ab02514e74509ec,
+    type: 3}
   mask:
     serializedVersion: 2
     m_Bits: 256
-  shooringRange: 0.5
+  shootingRange: 0
   current_mode: 1
 --- !u!1 &1462500170
 GameObject:
@@ -3778,7 +3779,7 @@ PrefabInstance:
     - target: {fileID: 3883479290749017202, guid: 30ba64a18ff25c44d80387d0a6d2a2b0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3883479290749017202, guid: 30ba64a18ff25c44d80387d0a6d2a2b0,
         type: 3}

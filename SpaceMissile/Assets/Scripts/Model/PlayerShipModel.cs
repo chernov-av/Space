@@ -53,9 +53,9 @@ public class PlayerShipModel : SpaceModel
         set { this.energy = value; }
     }
 
-    public void reduce_energy()
+    public void reduce_energy(double reduction)
     {
-        this.energy -= 1;
+        this.energy -= reduction;
     }
 
     public float get_shootspeed()

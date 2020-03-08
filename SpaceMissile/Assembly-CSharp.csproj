@@ -63,13 +63,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Dee-Shaw\Laser Pack\Scripts\Shooting.cs" />
+    <Compile Include="Assets\Dee-Shaw\Laser Pack\Scripts\SimpleCameraController.cs" />
+    <Compile Include="Assets\JMO Assets\WarFX\Scripts\CFX_AutoDestructShuriken.cs" />
+    <Compile Include="Assets\JMO Assets\WarFX\Scripts\CFX_LightIntensityFade.cs" />
+    <Compile Include="Assets\JMO Assets\WarFX\Scripts\WFX_BulletHoleDecal.cs" />
+    <Compile Include="Assets\JMO Assets\WarFX\Scripts\WFX_LightFlicker.cs" />
     <Compile Include="Assets\Scripts\Controller\PlayerShipController.cs" />
     <Compile Include="Assets\Scripts\Controller\ReadOnlyAttribute.cs" />
     <Compile Include="Assets\Scripts\Controller\ShipController.cs" />
     <Compile Include="Assets\Scripts\Controller\WeaponController.cs" />
     <Compile Include="Assets\Scripts\MainApplication.cs" />
     <Compile Include="Assets\Scripts\Model\EnemyModel.cs" />
+    <Compile Include="Assets\Scripts\Model\EnergyModel.cs" />
     <Compile Include="Assets\Scripts\Model\Guidance.cs" />
+    <Compile Include="Assets\Scripts\Model\LaserModel.cs" />
     <Compile Include="Assets\Scripts\Model\MissileModel.cs" />
     <Compile Include="Assets\Scripts\Model\PlayerShipModel.cs" />
     <Compile Include="Assets\Scripts\Model\ShellModel.cs" />
@@ -77,20 +85,54 @@
     <Compile Include="Assets\Scripts\SpaceModel.cs" />
     <Compile Include="Assets\Scripts\SpaceView.cs" />
     <Compile Include="Assets\Scripts\View\EnemyView.cs" />
+    <Compile Include="Assets\Scripts\View\EnergyView.cs" />
     <Compile Include="Assets\Scripts\View\HitmarkerView.cs" />
+    <Compile Include="Assets\Scripts\View\LaserView.cs" />
     <Compile Include="Assets\Scripts\View\MissileView.cs" />
     <Compile Include="Assets\Scripts\View\PlayerShipView.cs" />
     <Compile Include="Assets\Scripts\View\ShellView.cs" />
     <Compile Include="Assets\StarSparrow\Readme\Readme Files\Scripts\ReadmeStarSparrow.cs" />
-    <None Include="Assets\EffectExamples\Shared\Shaders\SurfaceShader_VC.shader" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Multiply Soft.shader" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Multiply Soft Scroll.shader" />
+    <None Include="Assets\Dee-Shaw\Information.txt" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Alpha-Specular TintColor.shader" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Add Scroll.shader" />
+    <None Include="Assets\Dee-Shaw\Laser Pack\Manual\Manual.txt" />
+    <None Include="Assets\JMO Assets\Cartoon FX Easy Editor\CartoonFX Easy Editor Readme.txt" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Particle Add A8.shader" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Smoke Scroll.shader" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Particle Multiply A8.shader" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S AlphaBlend Scroll.shader" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Particle AddSoft A8.shader" />
+    <None Include="Assets\JMO Assets\WarFX\!WarFX Readme.txt" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Alpha-Diffuse TintColor.shader" />
+    <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S AlphaBlend NoSoftParticles.shader" />
+    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Shaders">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Editor">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Runtime">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Runtime">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Editor">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
@@ -107,8 +149,17 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ShaderGraph.Editor">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.ShaderGraph.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
+      <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>D:/Project/devSpaceMissile/SpaceMissile/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>

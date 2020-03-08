@@ -6,16 +6,32 @@ public class WeaponController : SpaceController
 {
     public GameObject Missile;
     public GameObject Bullet;
+    public GameObject Lazer;
+    public GameObject EnergyShell;
+
     public LayerMask mask;
+
     float ShootTimer = 0.0f;
     float EnergyLaserTimer = 0.0f;
-    public float shooringRange;
+    public float shootingRange;
 
     public enum weapon_modes { MG=1, Missiles=2, Laser=3, Energy=4 };
     public weapon_modes current_mode = weapon_modes.MG;
     int numModes = System.Enum.GetValues(typeof(weapon_modes)).Length;
 
-    
+    private GameObject SpawnedLaser;
+
+    private void Start()
+    {
+        var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
+        PlayerShipModel psm = spaceship[0].GetComponent<PlayerShipView>().psc.get_psm();
+
+        SpawnedLaser = Instantiate(Lazer, spaceship[0].transform.position + new Vector3(8.0f, 0.0f, 0.0f), spaceship[0].transform.rotation) as GameObject;
+        SpawnedLaser.transform.parent = spaceship[0].transform;
+        SpawnedLaser.transform.localPosition = new Vector3(0.0f, 0.0f, 8.0f);
+        SpawnedLaser.SetActive(false);
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -59,10 +75,18 @@ public class WeaponController : SpaceController
                 {
                     this.EnergyLaserTimer -= Time.deltaTime;
                 }
+                if (Input.GetKeyUp(KeyCode.Mouse0))
+                {
+                    this.SpawnedLaser.SetActive(false);
+                }
                 break;
+                
 
             case weapon_modes.Energy:
-
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    this.shoot_energy();
+                }
                 break;
         }
         //Reloading
@@ -133,8 +157,8 @@ public class WeaponController : SpaceController
         
         if (psm.Ammo > 0 & this.ShootTimer<=0)
         {
-            var xError = Quaternion.AngleAxis(Random.Range(-this.shooringRange, this.shooringRange), transform.up);
-            var yError = Quaternion.AngleAxis(Random.Range(-this.shooringRange, this.shooringRange), transform.right);
+            var xError = Quaternion.AngleAxis(Random.Range(-this.shootingRange, this.shootingRange), transform.up);
+            var yError = Quaternion.AngleAxis(Random.Range(-this.shootingRange, this.shootingRange), transform.right);
             var shell = Instantiate(Bullet, spaceship[0].transform.position + new Vector3(8.0f, 0.0f, 0.0f), spaceship[0].transform.rotation*xError*yError) as GameObject;
             shell.transform.parent = spaceship[0].transform;
             shell.transform.localPosition = new Vector3(0.0f, 0.0f, 8.0f);
@@ -150,10 +174,51 @@ public class WeaponController : SpaceController
         var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
         PlayerShipModel psm = spaceship[0].GetComponent<PlayerShipView>().psc.get_psm();
 
-        if (psm.Energy > 0 & this.EnergyLaserTimer <= 0)
+
+        if (psm.Energy > 0)
         {
-            psm.reduce_energy();
+            this.SpawnedLaser.SetActive(true);
+            this.SpawnedLaser.transform.Find("Particle").transform.localScale = new Vector3(1.88f, 1.88f, 1000);
+            this.SpawnedLaser.transform.Find("Intersection").transform.localScale = new Vector3(1.88f, 1.88f, 1000);
+            psm.reduce_energy(1);
             this.EnergyLaserTimer = psm.get_energylaserreduction();
+
+            Vector3 startPos = this.SpawnedLaser.transform.position;
+            Vector3 dir = this.SpawnedLaser.transform.TransformDirection(Vector3.forward);
+            RaycastHit hit;
+
+            if (Physics.SphereCast(startPos, 1.0f, dir, out hit, 1000, this.mask))
+            {
+                //print(hit.transform.name);
+                GameObject target = hit.collider.gameObject;
+                this.SpawnedLaser.GetComponent<LaserView>().hit(target);
+            }
+        }
+        else
+        {
+            this.SpawnedLaser.SetActive(false);
+        }
+    }
+
+    void shoot_energy()
+    {
+        var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
+        PlayerShipModel psm = spaceship[0].GetComponent<PlayerShipView>().psc.get_psm();
+
+
+        if (psm.Energy >= 500)
+        {
+            var shell = Instantiate(EnergyShell, spaceship[0].transform.position + new Vector3(8.0f, 0.0f, 0.0f), spaceship[0].transform.rotation) as GameObject;
+            shell.transform.parent = spaceship[0].transform;
+            shell.transform.localPosition = new Vector3(0.0f, 0.0f, 8.0f);
+            shell.transform.parent = null;
+            shell.GetComponent<Rigidbody>().AddForce(shell.transform.forward * 5f, ForceMode.Impulse);
+            psm.reduce_energy(500);
+            
+        }
+        else
+        {
+            this.SpawnedLaser.SetActive(false);
         }
     }
 
