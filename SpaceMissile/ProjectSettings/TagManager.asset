@@ -17,6 +17,7 @@ TagManager:
   - FxTemporaire
   - Laser
   - Energy
+  - ShipExhaust
   layers:
   - Default
   - TransparentFX

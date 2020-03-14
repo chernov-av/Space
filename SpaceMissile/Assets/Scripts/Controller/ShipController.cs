@@ -34,6 +34,7 @@ public class ShipController : SpaceController
 
     private void FixedUpdate()
     {
+        var spaceship = GameObject.FindGameObjectsWithTag("PlayerShip");
         if (!this.mouseVisibility)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -42,7 +43,7 @@ public class ShipController : SpaceController
 
         if (this.controlEnable)
         {
-
+            spaceship[0].GetComponent<PlayerShipView>().controlShipExhaustLow();
             //set movement axis
             this.horizontalAxis = Input.GetAxis("Mouse X");
             this.verticalAxis = Input.GetAxis("Mouse Y");
@@ -70,6 +71,8 @@ public class ShipController : SpaceController
             {
                 this.currSpeed += this.acceleration * Time.deltaTime;
                 this.currSpeed = Mathf.Clamp(this.currSpeed, this.maxBackwardSpeed, this.maxForwardSpeed);
+                
+                spaceship[0].GetComponent<PlayerShipView>().controlShipExhaustForward();
             }
             else if (Input.GetKey("s"))
             {

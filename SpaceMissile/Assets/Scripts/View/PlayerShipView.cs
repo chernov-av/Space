@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlayerShipView : SpaceElement
@@ -54,7 +55,17 @@ public class PlayerShipView : SpaceElement
                 this.TextAmmo.text = this.missiles.ToString();
                 break;
         }
-        
+    }
+    
+    public void controlShipExhaustForward()
+    {
+        ParticleSystem exhaust = GetComponentsInChildren<ParticleSystem>().FirstOrDefault(r => r.tag == "ShipExhaust");
+        exhaust.startSpeed = 50.0f;
+    }
 
+    public void controlShipExhaustLow()
+    {
+        ParticleSystem exhaust = GetComponentsInChildren<ParticleSystem>().FirstOrDefault(r => r.tag == "ShipExhaust");
+        exhaust.startSpeed = 1.0f;
     }
 }
